@@ -15,9 +15,7 @@
                     </div>
 
                 @empty
-                    <div class="alert alert-warning" role="alert">
-                        No Data to Show!
-                    </div>
+                    No Data to Show!
                 @endforelse
             </div>
         </div>

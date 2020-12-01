@@ -24,7 +24,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $videos = Video::all()->random(3);
+        $videos = Video::all();
+        if (isset($videos) && count($videos) > 3)
+            $videos->random(3);
         return view('home', compact('videos'));
     }
 }
