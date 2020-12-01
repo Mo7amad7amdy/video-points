@@ -18,6 +18,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::resource('videos', 'Admin\VideoController');
     Route::resource('quiz', 'Admin\QuizController');
     Route::resource('users', 'Admin\UserController');
+    Route::get('/notifications', 'Admin\UserController@notifications');
 });
 Route::middleware('auth')->group(function () {
     Route::get('/home', 'HomeController@index');

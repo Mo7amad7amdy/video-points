@@ -84,4 +84,8 @@ class UserController extends Controller
     {
         //
     }
+
+    public function notifications(){
+        return auth()->user()->unreadNotifications()->get()->toArray();
+    }
 }

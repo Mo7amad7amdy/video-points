@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\AnsweredQuizController;
 use App\Point;
 use App\QuizOption;
+use App\User;
 use App\Video;
 use Illuminate\Http\Request;
 
@@ -39,16 +41,19 @@ class VideoController extends Controller
         }
     }
 
-    public function answers(Request $request){
+    public function answers(Request $request, User $user){
         $option = QuizOption::find($request->option_id);
 
         if ($option && $option->correct == true){
-            $dd = Point::firstOrCreate([
+            Point::firstOrCreate([
                 'user_id'           => auth()->user()->id,
                 'quiz_id'           => $option->quiz->id,
                 'score'             => 10,
                 'status_message'    => 'You Got 10 Points For Answers the Quiz',
             ]);
+            // add this to send a notification
+//            dd($option->quiz->id);
+            $user->notify(new AnsweredQuizController(auth()->user()));
             toastr()->success('Your Answers is Correct');
             return back();
         }
