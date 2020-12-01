@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,6 +18,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .pull-right{
+            float: right;
+        }
+    </style>
+    @toastr_css
 </head>
 <body>
     <div id="app">
@@ -33,7 +39,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @if(auth()->check() && auth()->user()->type == '1')
+                            <li class="nav-item"><a class="nav-link" href="{{ route('videos.index') }}">Videos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
+                            @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -51,7 +60,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->name }} @if(auth()->user()->type == 0) - ( Score: {{ Auth::user()->points->sum('score') }} ) @endif
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -76,5 +85,9 @@
             @yield('content')
         </main>
     </div>
+    @jquery
+    @toastr_js
+    @toastr_render
+@yield('js')
 </body>
 </html>
